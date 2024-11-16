@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.css'],
   standalone: true,
   imports: [CommonModule],
+  //providers: [UserService]
 })
 export class HeaderComponent implements OnInit {
   isAuthenticated = false;

@@ -17,7 +17,7 @@ import { UtilityService } from 'src/app/shared/utility.service';
 export class LandingPageComponent implements OnInit {
   isLoginMode = true;
   isLoggedIn = false;
-  alert: string;
+  alert: string = '';
   showSpinner = false;
 
   constructor(private authService: AuthService, private lIDService: LoggedInDataService, public dialog: MatDialog
