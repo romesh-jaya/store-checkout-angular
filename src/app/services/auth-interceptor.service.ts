@@ -50,7 +50,13 @@ export class AuthInterceptorService implements HttpInterceptor {
 
       // call refreshToken to obtain a fresh token passing in the refresh token in the background,
       // and then resend the original request
-      return this.authService.refreshToken().pipe(
+      let tokenResponse = this.authService.refreshToken();
+
+      if (!tokenResponse) {
+        return next.handle(request);
+      }
+
+      return tokenResponse.pipe(
         switchMap((token: any) => {
           this.isRefreshing = false;
           this.refreshTokenSubject.next(token.token);
