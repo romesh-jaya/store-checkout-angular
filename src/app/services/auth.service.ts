@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
-import { CookieService } from 'ngx-cookie-service';
+import { CookieService } from 'ngx-cookie';
 import { LoginUser } from '../models/login-user.model';
 import { LoggedInDataService } from './logged-in-data.service';
 import { UtilityService } from './utility.service';
@@ -151,15 +151,7 @@ export class AuthService {
       ...this.lIDService.loggedInUser,
       lastLoggedIn: new Date().getTime(),
     };
-    this.cookieService.set(
-      'AuthUser',
-      JSON.stringify(saveData),
-      365,
-      '/',
-      undefined,
-      undefined,
-      'Strict'
-    ); // set expiry for 1 year
+    this.cookieService.put('AuthUser', JSON.stringify(saveData)); // set expiry for 1 year
     console.log('Saving cookie for future use');
     if (isAdmin) {
       console.log('This user has admin privileges.');
@@ -217,7 +209,7 @@ export class AuthService {
     this.lIDService.loggedInUser = undefined;
     this.lIDService.loginChanged.next(null);
     this.router.navigate(['/']);
-    this.cookieService.delete('AuthUser', '/');
+    this.cookieService.remove('AuthUser');
     console.log('Deleting cookie');
   }
 }
