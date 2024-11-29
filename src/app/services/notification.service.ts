@@ -1,18 +1,11 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
-  // Note: i couldn't perform this logic within an error-interceptor, as it interferes with the re-send logic of auth-interceptor
-  getError(error: any) {
-    if (!error.status || error.status === 0) {
-      return 'Error while connecting to Server. Please contact Administrator';
-    }
+  readonly toastr = inject(ToastrService);
 
-    let errorMessage = error.message;
-
-    if (error.error && error.error.message) {
-      errorMessage = error.error.message; // error messages from server are nested errors.
-    }
-    return errorMessage;
+  error(message: string) {
+    this.toastr.error(message);
   }
 }

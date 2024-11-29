@@ -5,7 +5,7 @@ import { AuthService, AuthResponseData } from '../../services/auth.service';
 import { LoggedInDataService } from '../../services/logged-in-data.service';
 import { UtilityService } from '../../services/utility.service';
 import { CommonModule } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -25,7 +25,7 @@ export class LandingPageComponent implements OnInit {
     private authService: AuthService,
     private lIDService: LoggedInDataService,
     private utilityService: UtilityService,
-    private toastr: ToastrService
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -58,12 +58,6 @@ export class LandingPageComponent implements OnInit {
     // perform login
     authObs.subscribe(
       () => {
-        if (this.isLoginMode) {
-          console.log('Logged in. User: ' + email);
-        } else {
-          console.log('Logged in after Signup. User: ' + email);
-        }
-
         this.showSpinner = false;
         this.isLoggedIn = true;
         form.reset();
@@ -72,7 +66,7 @@ export class LandingPageComponent implements OnInit {
       },
       (error) => {
         this.showSpinner = false;
-        this.toastr.error(this.utilityService.getError(error));
+        this.notificationService.error(this.utilityService.getError(error));
       }
     );
   }
