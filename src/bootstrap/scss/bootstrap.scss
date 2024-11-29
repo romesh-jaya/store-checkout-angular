@@ -4,8 +4,8 @@
 
 @import "../../../node_modules/bootstrap/scss/functions";
 @import "../../../node_modules/bootstrap/scss/variables";
-$primary: $pink-600;
-$secondary: $yellow-300;
+$primary: #2196f3;
+$secondary: #757575;
 $success: $green;
 $info: $cyan;
 $warning: $yellow;
@@ -24,3 +24,8 @@ $theme-colors: (
   "dark": $dark,
 );
 @import "bootstrap/scss/bootstrap";
+//custom overrides
+.btn-primary {
+  --bs-btn-color: white;
+  --bs-btn-disabled-color: white;
+}
