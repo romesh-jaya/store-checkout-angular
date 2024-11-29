@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService, AuthResponseData } from '../auth/auth.service';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { LoggedInDataService } from '../auth/logged-in-data.service';
-import { ErrorDialog } from '../shared/error-dialog/error-dialog';
-import { MatDialog } from '@angular/material';
-import { UtilityService } from 'src/app/shared/utility.service';
-
-
+import { AuthService, AuthResponseData } from '../../services/auth.service';
+import { LoggedInDataService } from '../../services/logged-in-data.service';
+import { UtilityService } from '../../services/utility.service';
 
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
-  styleUrls: ['./landing-page.component.css']
+  styleUrls: ['./landing-page.component.css'],
+  standalone: true,
+  imports: [MatDialog],
+  providers: [AuthService, LoggedInDataService],
 })
 export class LandingPageComponent implements OnInit {
   isLoginMode = true;
@@ -20,8 +19,12 @@ export class LandingPageComponent implements OnInit {
   alert: string = '';
   showSpinner = false;
 
-  constructor(private authService: AuthService, private lIDService: LoggedInDataService, public dialog: MatDialog
-    , private utilityService: UtilityService) { }
+  constructor(
+    private authService: AuthService,
+    private lIDService: LoggedInDataService,
+    public dialog: MatDialog,
+    private utilityService: UtilityService
+  ) {}
 
   ngOnInit() {
     this.isLoggedIn = !!this.lIDService.loggedInUser;
@@ -65,7 +68,7 @@ export class LandingPageComponent implements OnInit {
 
         this.isLoginMode = true; // for next time around
       },
-      error => {
+      (error) => {
         if (this.isLoginMode) {
           this.alert = 'Error while trying to login : ';
         } else {
@@ -75,11 +78,9 @@ export class LandingPageComponent implements OnInit {
         this.showSpinner = false;
         this.dialog.open(ErrorDialog, {
           data: { message: this.alert + this.utilityService.getError(error) },
-          panelClass: 'custom-modalbox'
+          panelClass: 'custom-modalbox',
         });
       }
     );
-
   }
-
 }
