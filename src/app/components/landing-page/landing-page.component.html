@@ -39,7 +39,7 @@
           ngModel
           name="password"
           required
-          minlength="6"
+          [minlength]="!isLoginMode ? requiredCharCountForPassword : 1"
           appValidateEqual="confirmPassword"
           reverse="true"
           #password="ngModel"

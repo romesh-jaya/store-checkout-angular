@@ -19,8 +19,8 @@ import { CommonModule } from '@angular/common';
 export class LandingPageComponent implements OnInit {
   isLoginMode = true;
   isLoggedIn = false;
-  alert: string = '';
   showSpinner = false;
+  requiredCharCountForPassword = 6;
   readonly dialog = inject(MatDialog);
 
   constructor(
@@ -72,15 +72,9 @@ export class LandingPageComponent implements OnInit {
         this.isLoginMode = true; // for next time around
       },
       (error) => {
-        if (this.isLoginMode) {
-          this.alert = 'Error while trying to login : ';
-        } else {
-          this.alert = 'Error while trying to sign up : ';
-        }
-
         this.showSpinner = false;
         this.dialog.open(ErrorDialog, {
-          data: { message: this.alert + this.utilityService.getError(error) },
+          data: { message: this.utilityService.getError(error) },
           panelClass: 'custom-modalbox',
         });
       }
