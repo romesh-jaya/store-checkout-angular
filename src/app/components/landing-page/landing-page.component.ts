@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { AuthService, AuthResponseData } from '../../services/auth.service';
 import { LoggedInDataService } from '../../services/logged-in-data.service';
 import { UtilityService } from '../../services/utility.service';
+import { ErrorDialog } from '../error-dialog/error-dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.css'],
   standalone: true,
-  imports: [MatDialog],
+  imports: [FormsModule, CommonModule],
   providers: [AuthService, LoggedInDataService],
 })
 export class LandingPageComponent implements OnInit {
@@ -18,11 +21,11 @@ export class LandingPageComponent implements OnInit {
   isLoggedIn = false;
   alert: string = '';
   showSpinner = false;
+  readonly dialog = inject(MatDialog);
 
   constructor(
     private authService: AuthService,
     private lIDService: LoggedInDataService,
-    public dialog: MatDialog,
     private utilityService: UtilityService
   ) {}
 
