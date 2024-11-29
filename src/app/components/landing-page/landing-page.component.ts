@@ -4,9 +4,8 @@ import { Observable } from 'rxjs';
 import { AuthService, AuthResponseData } from '../../services/auth.service';
 import { LoggedInDataService } from '../../services/logged-in-data.service';
 import { UtilityService } from '../../services/utility.service';
-import { ErrorDialog } from '../error-dialog/error-dialog';
-import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-landing-page',
@@ -21,12 +20,12 @@ export class LandingPageComponent implements OnInit {
   isLoggedIn = false;
   showSpinner = false;
   requiredCharCountForPassword = 6;
-  readonly dialog = inject(MatDialog);
 
   constructor(
     private authService: AuthService,
     private lIDService: LoggedInDataService,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -73,10 +72,7 @@ export class LandingPageComponent implements OnInit {
       },
       (error) => {
         this.showSpinner = false;
-        this.dialog.open(ErrorDialog, {
-          data: { message: this.utilityService.getError(error) },
-          panelClass: 'custom-modalbox',
-        });
+        this.toastr.error(this.utilityService.getError(error));
       }
     );
   }
