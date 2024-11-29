@@ -2,6 +2,7 @@
   <nav class="navbar navbar-toggleable-md navbar-light bg-light px-2">
     <div class="navbar-header">
       <button
+        *ngIf="isAuthenticated"
         class="navbar-toggler navbar-toggler-right"
         type="button"
         data-toggle="collapse"
@@ -12,7 +13,7 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a routerLink="/" class="navbar-brand ps-4">Monty Bakery</a>
+      <a routerLink="/" class="navbar-brand ps-4">Store Checkout</a>
     </div>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="nav navbar-nav">
@@ -80,13 +81,6 @@
                 </div>
               -->
       </nav>
-      <p
-        *ngIf="!isAuthenticated"
-        class="unselectable"
-        style="font-size: 13px !important"
-      >
-        Not logged in
-      </p>
     </div>
   </nav>
 </div>
