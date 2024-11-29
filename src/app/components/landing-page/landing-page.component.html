@@ -1,17 +1,15 @@
-<div style="margin-top: 10px">
-  <p *ngIf="!isLoggedIn">Please login or signup to continue.</p>
-  <p *ngIf="isLoggedIn">Welcome to Monty Bakery.</p>
-</div>
 <div class="row">
-  <div class="col-12 col-md-6 col-md-offset-3">
+  <div class="col-12 col-md-6 col-md-offset-3 reg-form">
+    <div class="mt-4">
+      <p *ngIf="!isLoggedIn">Please login or signup to continue.</p>
+      <p *ngIf="isLoggedIn">Welcome to Monty Bakery.</p>
+    </div>
     <form
       #authForm="ngForm"
       (ngSubmit)="onSubmit(authForm)"
       *ngIf="!isLoggedIn"
     >
-      <span>
-        <h5>{{ isLoginMode ? "Login" : "Sign Up" }}</h5>
-      </span>
+      <h4>{{ isLoginMode ? "Login" : "Sign Up" }}</h4>
       <hr />
       <div class="form-group">
         <label for="email">E-Mail</label>
@@ -73,7 +71,7 @@
           Password mismatch
         </small>
       </div>
-      <div>
+      <div class="mt-5 d-flex justify-content-between">
         <button
           class="btn btn-primary"
           id="btnSubmit"
@@ -82,14 +80,14 @@
         >
           {{ isLoginMode ? "Login" : "Sign Up" }}
         </button>
-        |
-        <button class="btn btn-primary" (click)="onSwitchMode()" type="button">
+        <button
+          class="btn btn-secondary"
+          (click)="onSwitchMode()"
+          type="button"
+        >
           Switch to {{ isLoginMode ? "Sign Up" : "Login" }}
         </button>
       </div>
     </form>
   </div>
 </div>
-<!--
-  <app-spinner [show]="showSpinner" [text]="'Loading...'"></app-spinner>
-  -->
