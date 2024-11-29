@@ -4,6 +4,6 @@ import { LoginUser } from '../models/login-user.model';
 
 @Injectable({ providedIn: 'root' })
 export class LoggedInDataService {
-    loggedInUser: LoginUser | undefined;
-    loginChanged = new Subject();
+  loggedInUser?: LoginUser;
+  loginChanged = new Subject();
 }

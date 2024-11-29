@@ -10,7 +10,7 @@ import { LoggedInDataService } from '../../services/logged-in-data.service';
   styleUrls: ['./header.component.css'],
   standalone: true,
   imports: [CommonModule],
-  providers: [AuthService, LoggedInDataService]
+  providers: [],
 })
 export class HeaderComponent implements OnInit {
   isAuthenticated = false;
@@ -19,17 +19,16 @@ export class HeaderComponent implements OnInit {
   loggedInUser: any;
   constructor(
     private authService: AuthService,
-     private lIDService: LoggedInDataService,
-     private router: Router) { }
+    private lIDService: LoggedInDataService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.refreshInfo();
 
     this.lIDService.loginChanged.subscribe(() => {
       this.refreshInfo();
-    }
-    );
-
+    });
   }
 
   refreshInfo() {
@@ -51,5 +50,4 @@ export class HeaderComponent implements OnInit {
   onChangePassword() {
     this.router.navigate(['/change-password']);
   }
-
 }

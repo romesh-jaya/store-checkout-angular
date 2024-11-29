@@ -13,7 +13,7 @@ import { NotificationService } from '../../services/notification.service';
   styleUrls: ['./landing-page.component.css'],
   standalone: true,
   imports: [FormsModule, CommonModule],
-  providers: [AuthService, LoggedInDataService],
+  providers: [],
 })
 export class LandingPageComponent implements OnInit {
   isLoginMode = true;
