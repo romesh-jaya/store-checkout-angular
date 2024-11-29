@@ -72,12 +72,7 @@
         </small>
       </div>
       <div class="mt-5 d-flex justify-content-between">
-        <button
-          class="btn btn-primary"
-          id="btnSubmit"
-          type="submit"
-          [disabled]="!authForm.valid"
-        >
+        <button class="btn btn-primary" id="btnSubmit" type="submit">
           {{ isLoginMode ? "Login" : "Sign Up" }}
         </button>
         <button
