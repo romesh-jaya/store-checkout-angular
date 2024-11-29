@@ -21,7 +21,14 @@
           name="email"
           required
           email
+          #email="ngModel"
         />
+        <div
+          [hidden]="email.valid || (email.pristine && !authForm.submitted)"
+          class="text-danger"
+        >
+          <small> Email is required</small>
+        </div>
       </div>
       <div class="form-group mt-2">
         <label for="password">Password</label>
@@ -42,9 +49,11 @@
             password.valid || (password.pristine && !authForm.submitted)
           "
           class="text-danger"
-          *ngIf="!isLoginMode"
         >
-          <small> Password is required (min 6 characters) </small>
+          <small>
+            Password is required
+            <span *ngIf="!isLoginMode">(min 6 characters)</span>
+          </small>
         </div>
       </div>
       <div class="form-group mt-2" *ngIf="!isLoginMode">
