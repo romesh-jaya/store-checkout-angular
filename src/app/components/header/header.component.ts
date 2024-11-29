@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../services/auth.service';
 import { LoggedInDataService } from '../../services/logged-in-data.service';
 
@@ -9,7 +10,7 @@ import { LoggedInDataService } from '../../services/logged-in-data.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgbModule],
   providers: [],
 })
 export class HeaderComponent implements OnInit {
