@@ -36,7 +36,7 @@ export class ChangePasswordComponent {
         message: 'Are you sure you wish to change your password?',
         title: 'Change password',
       },
-      panelClass: 'custom-modalbox',
+      position: { right: '10px', top: '10px' },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

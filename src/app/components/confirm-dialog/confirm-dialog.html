@@ -1,41 +1,15 @@
-<div>
-  <h4 mat-dialog-title class="title">{{data.title}}</h4>
-
-  <div style="padding-left: 25px; padding-right: 25px; padding-bottom: 40px">
-    <span>{{data.message}}</span>
-  </div>
-  <mat-dialog-actions align="end">
-    <button
-      mat-button
-      class="mat-raised-button"
-      mat-dialog-close
-      style="
-        height: 30px;
-        width: 100px;
-        margin-right: 15px;
-        margin-bottom: 40px;
-        position: absolute;
-        right: 0;
-        bottom: 0;
-      "
-    >
-      Cancel
-    </button>
-    <button
-      mat-button
-      class="mat-raised-button"
-      [mat-dialog-close]="true"
-      style="
-        height: 30px;
-        width: 100px;
-        margin-right: 15px;
-        margin-bottom: 40px;
-        position: absolute;
-        right: 0;
-        bottom: 0;
-      "
-    >
-      OK
-    </button>
-  </mat-dialog-actions>
-</div>
+<h2 mat-dialog-title>{{data.title}}</h2>
+<mat-dialog-content>
+  <p>{{data.message}}</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close class="mat-raised-button">Cancel</button>
+  <button
+    mat-button
+    [mat-dialog-close]="true"
+    cdkFocusInitial
+    class="mat-raised-button"
+  >
+    Ok
+  </button>
+</mat-dialog-actions>
