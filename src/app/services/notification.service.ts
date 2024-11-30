@@ -8,4 +8,8 @@ export class NotificationService {
   error(message: string) {
     this.toastr.error(message);
   }
+
+  success(message: string) {
+    this.toastr.success(message);
+  }
 }
