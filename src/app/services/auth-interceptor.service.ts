@@ -4,7 +4,7 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, filter, take, switchMap } from 'rxjs/operators';
@@ -15,31 +15,41 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
   private isRefreshing = false;
-  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null
+  );
 
-  constructor(public authService: AuthService, private lIDService: LoggedInDataService) { }
+  constructor(
+    public authService: AuthService,
+    private lIDService: LoggedInDataService
+  ) {}
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     if (!this.lIDService.loggedInUser) {
       return next.handle(request); // allow for login requests
     }
 
     request = this.addToken(request, this.lIDService.loggedInUser.token);
 
-    return next.handle(request).pipe(catchError(error => {
-      if (error instanceof HttpErrorResponse && error.status === 401) {
-        return this.handle401Error(request, next);
-      } else {
-        return throwError(error);
-      }
-    }));
+    return next.handle(request).pipe(
+      catchError((error) => {
+        if (error instanceof HttpErrorResponse && error.status === 401) {
+          return this.handle401Error(request, next);
+        } else {
+          return throwError(error);
+        }
+      })
+    );
   }
 
   private addToken(request: HttpRequest<any>, token: string) {
     return request.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 
@@ -61,16 +71,17 @@ export class AuthInterceptorService implements HttpInterceptor {
           this.isRefreshing = false;
           this.refreshTokenSubject.next(token.token);
           return next.handle(this.addToken(request, token.token));
-        }));
-
+        })
+      );
     } else {
-      return this.refreshTokenSubject.pipe(// queue any further requests while the refreshing is taking place
-        filter(token => token != null),
+      return this.refreshTokenSubject.pipe(
+        // queue any further requests while the refreshing is taking place
+        filter((token) => token != null),
         take(1),
-        switchMap(token => {
+        switchMap((token) => {
           return next.handle(this.addToken(request, token));
-        }));
+        })
+      );
     }
-
   }
 }
