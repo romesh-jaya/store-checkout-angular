@@ -6,9 +6,9 @@ import {
 } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-error-dialog',
-  templateUrl: './error-dialog.html',
-  styleUrls: ['./error-dialog.css'],
+  selector: 'app-confirm-dialog',
+  templateUrl: './confirm-dialog.html',
+  styleUrls: ['./confirm-dialog.css'],
   standalone: true,
   imports: [MatDialogActions],
 })
