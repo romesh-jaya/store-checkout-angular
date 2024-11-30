@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
-import { CookieService } from 'ngx-cookie';
+import { CookieOptions, CookieService } from 'ngx-cookie';
 import { LoginUser } from '../models/login-user.model';
 import { LoggedInDataService } from './logged-in-data.service';
 import { UtilityService } from './utility.service';
@@ -21,6 +21,7 @@ export interface AuthResponseData {
 export class AuthService {
   loginProcessComplete = new Subject<boolean>();
   baseURL = environment.nodeEndPoint + '/users';
+  expiryTimeIntervalDays = 365;
 
   constructor(
     private http: HttpClient,
@@ -98,7 +99,7 @@ export class AuthService {
         })
         .pipe(
           tap((resData) => {
-            console.log('Obtained fresh token.');
+            console.info('Obtained fresh token.');
             this.handleAuthentication(
               email ?? '',
               resData.token,
@@ -120,8 +121,6 @@ export class AuthService {
       })
       .toPromise()
       .then((resData) => {
-        console.log('Autologin using cookie.');
-        console.log('Obtained fresh token.');
         this.handleAuthentication(
           email,
           resData?.token ?? '',
@@ -130,7 +129,7 @@ export class AuthService {
         );
       })
       .catch((error) => {
-        console.log(
+        console.error(
           'Autologin using refresh token failed: ' +
             this.utilityService.getError(error)
         );
@@ -151,11 +150,14 @@ export class AuthService {
       ...this.lIDService.loggedInUser,
       lastLoggedIn: new Date().getTime(),
     };
-    this.cookieService.put('AuthUser', JSON.stringify(saveData)); // set expiry for 1 year
-    console.log('Saving cookie for future use');
-    if (isAdmin) {
-      console.log('This user has admin privileges.');
-    }
+    let cookieOptions: CookieOptions = {
+      // set expiry for 1 year
+      expires: this.utilityService.addDays(
+        new Date(),
+        this.expiryTimeIntervalDays
+      ),
+    };
+    this.cookieService.put('AuthUser', JSON.stringify(saveData), cookieOptions);
     this.loginProcessComplete.next(true);
   }
 
@@ -163,7 +165,6 @@ export class AuthService {
     let timeLapsed;
     const currentDate = new Date();
     const storedCookie = this.cookieService.get('AuthUser');
-    console.log('Reading cookie.');
     if (storedCookie) {
       const userData: {
         email: string;
@@ -176,12 +177,7 @@ export class AuthService {
       if (!userData) {
         return;
       }
-      console.log(
-        'Cookie contained user: ' +
-          userData.email +
-          ', isAdmin: ' +
-          userData._isAdmin
-      );
+
       timeLapsed =
         currentDate.getTime() - new Date(userData.lastLoggedIn).getTime();
       if (timeLapsed / (1000 * 60) > 60) {
@@ -189,7 +185,7 @@ export class AuthService {
         // get a fresh token - mostly to check that server connection is still up
         this.refreshTokenOnAutoLogin(userData.email, userData.refreshToken);
       } else {
-        console.log('Autologin without refresh token');
+        console.info('Autologin without refresh token');
         const user = new LoginUser(
           userData.email,
           userData.token,
@@ -199,8 +195,6 @@ export class AuthService {
         this.lIDService.loggedInUser = user;
         this.lIDService.loginChanged.next(null);
       }
-    } else {
-      console.log("Cookie doesn't exist.");
     }
     this.loginProcessComplete.next(true);
   }
@@ -210,6 +204,5 @@ export class AuthService {
     this.lIDService.loginChanged.next(null);
     this.router.navigate(['/']);
     this.cookieService.remove('AuthUser');
-    console.log('Deleting cookie');
   }
 }
