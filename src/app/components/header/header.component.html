@@ -1,69 +1,18 @@
 <div>
   <nav class="navbar navbar-toggleable-md navbar-light bg-light px-2">
-    <div class="navbar-header">
-      <button
-        *ngIf="isAuthenticated"
-        class="navbar-toggler navbar-toggler-right"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <div class="d-flex">
+      <div>
+        <button *ngIf="isAuthenticated" mat-button [matMenuTriggerFor]="menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>Item 1</button>
+          <button mat-menu-item>Item 2</button>
+        </mat-menu>
+      </div>
       <a routerLink="/" class="navbar-brand ps-4">Store Checkout</a>
     </div>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="nav navbar-nav">
-        <li
-          routerLinkActive="active"
-          *ngIf="isAuthenticated"
-          class="nav-item"
-          data-toggle="collapse"
-          data-target=".navbar-collapse.show"
-        >
-          <a routerLink="/shopping-cart" class="nav-link">Shopping Cart</a>
-        </li>
-        <li
-          routerLinkActive="active"
-          *ngIf="isAdmin || isSuperUser"
-          class="nav-item"
-          data-toggle="collapse"
-          data-target=".navbar-collapse.show"
-        >
-          <a routerLink="/price-edit" class="nav-link">Edit Prices</a>
-        </li>
-        <li
-          routerLinkActive="active"
-          *ngIf="isAdmin || isSuperUser"
-          class="nav-item"
-          data-toggle="collapse"
-          data-target=".navbar-collapse.show"
-        >
-          <a routerLink="/manage-product" class="nav-link">Manage Products</a>
-        </li>
-        <li
-          routerLinkActive="active"
-          *ngIf="isAdmin || isSuperUser"
-          class="nav-item"
-          data-toggle="collapse"
-          data-target=".navbar-collapse.show"
-        >
-          <a routerLink="/price-overview" class="nav-link">Price Overview</a>
-        </li>
-        <li
-          routerLinkActive="active"
-          *ngIf="isSuperUser"
-          class="nav-item"
-          data-toggle="collapse"
-          data-target=".navbar-collapse.show"
-        >
-          <a routerLink="/users" class="nav-link">Configured Users</a>
-        </li>
-      </ul>
-    </div>
+
     <div style="float: right; margin-right: 10px">
       <nav class="navbar navbar-toggleable-md navbar-light bg-light">
         <div

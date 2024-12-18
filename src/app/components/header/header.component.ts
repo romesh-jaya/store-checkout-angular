@@ -4,13 +4,22 @@ import { Router } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../services/auth.service';
 import { LoggedInDataService } from '../../services/logged-in-data.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   standalone: true,
-  imports: [CommonModule, NgbModule],
+  imports: [
+    CommonModule,
+    NgbModule,
+    MatMenuModule,
+    MatMenuTrigger,
+    MatButtonModule,
+  ],
   providers: [],
 })
 export class HeaderComponent implements OnInit {
