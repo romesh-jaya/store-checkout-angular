@@ -11,3 +11,7 @@
   user-select: none;
   color: #777;
 }
+
+.main-menu::after {
+  display: none !important;
+}

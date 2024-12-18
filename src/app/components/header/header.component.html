@@ -1,15 +1,36 @@
 <div>
   <nav class="navbar navbar-toggleable-md navbar-light bg-light px-2">
     <div class="d-flex">
-      <div>
-        <button *ngIf="isAuthenticated" mat-button [matMenuTriggerFor]="menu">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item>Item 1</button>
-          <button mat-menu-item>Item 2</button>
-        </mat-menu>
-      </div>
+      <nav class="navbar navbar-toggleable-md navbar-light bg-light ps-2">
+        <div
+          class="navbar-brand"
+          ngbDropdown
+          #mainMenu="ngbDropdown"
+          *ngIf="isAuthenticated"
+        >
+          <button
+            class="nav-link dropdown-toggle main-menu"
+            style="background-color: transparent; font-size: 13px !important"
+            id="dropdownManual"
+            ngbDropdownAnchor
+            (focus)="mainMenu.open()"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownManual">
+            <button
+              class="dropdown-item"
+              ngbDropdownItem
+              (click)="onChangePassword()"
+            >
+              Change Password
+            </button>
+            <button class="dropdown-item" ngbDropdownItem (click)="onLogout()">
+              Sign out
+            </button>
+          </div>
+        </div>
+      </nav>
       <a routerLink="/" class="navbar-brand ps-4">Store Checkout</a>
     </div>
 
