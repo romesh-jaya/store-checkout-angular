@@ -21,12 +21,41 @@
             <button
               class="dropdown-item"
               ngbDropdownItem
-              (click)="onChangePassword()"
+              (click)="router.navigate(['/shopping-cart'])"
             >
-              Change Password
+              Shopping Cart
             </button>
-            <button class="dropdown-item" ngbDropdownItem (click)="onLogout()">
-              Sign out
+            <button
+              *ngIf="isAdmin || isSuperUser"
+              class="dropdown-item"
+              ngbDropdownItem
+              (click)="router.navigate(['/price-edit'])"
+            >
+              Edit Prices
+            </button>
+            <button
+              *ngIf="isAdmin || isSuperUser"
+              class="dropdown-item"
+              ngbDropdownItem
+              (click)="router.navigate(['/manage-products'])"
+            >
+              Manage Products
+            </button>
+            <button
+              *ngIf="isAdmin || isSuperUser"
+              class="dropdown-item"
+              ngbDropdownItem
+              (click)="router.navigate(['/price-overview'])"
+            >
+              Price Overview
+            </button>
+            <button
+              *ngIf="isSuperUser"
+              class="dropdown-item"
+              ngbDropdownItem
+              (click)="router.navigate(['/users'])"
+            >
+              Configured Users
             </button>
           </div>
         </div>

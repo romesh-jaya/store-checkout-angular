@@ -4,22 +4,12 @@ import { Router } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../services/auth.service';
 import { LoggedInDataService } from '../../services/logged-in-data.service';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatButtonModule } from '@angular/material/button';
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   standalone: true,
-  imports: [
-    CommonModule,
-    NgbModule,
-    MatMenuModule,
-    MatMenuTrigger,
-    MatButtonModule,
-  ],
+  imports: [CommonModule, NgbModule],
   providers: [],
 })
 export class HeaderComponent implements OnInit {
@@ -30,7 +20,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private lIDService: LoggedInDataService,
-    private router: Router
+    public router: Router
   ) {}
 
   ngOnInit() {
