@@ -6,13 +6,26 @@ import { environment } from '../../../environments/environment';
 import { Product } from '../../../models/product.model';
 import { UtilityService } from '../../../services/utility.service';
 import { NotificationService } from '../../../services/notification.service';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatRadioModule } from '@angular/material/radio';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
+  standalone: true,
+  imports: [
+    MatPaginatorModule,
+    MatRadioModule,
+    CommonModule,
+    FormsModule,
+    FontAwesomeModule,
+  ],
   styleUrls: ['./product-list.component.css'],
 })
-export class ProductsComponent implements OnInit {
+export class ProductListComponent implements OnInit {
   products: Product[] = [];
   searchString = '';
   showSpinner = false;
