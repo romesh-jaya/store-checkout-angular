@@ -11,5 +11,10 @@ export const routes: Routes = [
     component: ChangePasswordComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'manage-products',
+    component: ChangePasswordComponent,
+    canActivate: [AuthGuard],
+  },
   { path: '**', component: PageNotFoundComponent },
 ];
