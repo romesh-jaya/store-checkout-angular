@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { faSearch, faDownload } from '@fortawesome/free-solid-svg-icons';
-import { ProductService } from './product.service';
+import { ProductService } from '../../../services/product.service';
 import { MatDialog } from '@angular/material/dialog';
-import { environment } from '../../environments/environment';
-import { Product } from '../../models/product.model';
-import { UtilityService } from '../../services/utility.service';
-import { NotificationService } from '../../services/notification.service';
+import { environment } from '../../../environments/environment';
+import { Product } from '../../../models/product.model';
+import { UtilityService } from '../../../services/utility.service';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css'],
+  selector: 'app-product-list',
+  templateUrl: './product-list.component.html',
+  styleUrls: ['./product-list.component.css'],
 })
 export class ProductsComponent implements OnInit {
   products: Product[] = [];

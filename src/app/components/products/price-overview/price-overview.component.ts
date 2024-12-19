@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../product.service';
+import { ProductService } from '../../../services/product.service';
 import { Product } from '../../shared/product.model';
 import { Router } from '@angular/router';
 import { ErrorDialog } from '../../shared/error-dialog/error-dialog';
@@ -16,17 +16,27 @@ export interface PriceData {
 @Component({
   selector: 'app-price-overview',
   templateUrl: './price-overview.component.html',
-  styleUrls: ['./price-overview.component.css']
+  styleUrls: ['./price-overview.component.css'],
 })
 export class PriceOverviewComponent implements OnInit {
   products: Product[] = [];
   showSpinner = false;
   priceData: PriceData[] = [];
-  displayedColumns: string[] = ['lineNo', 'product', 'price1', 'price2', 'edit'];
+  displayedColumns: string[] = [
+    'lineNo',
+    'product',
+    'price1',
+    'price2',
+    'edit',
+  ];
   dataSource;
 
-  constructor(private pService: ProductService, private router: Router, public dialog: MatDialog,
-    private utilityService: UtilityService) { }
+  constructor(
+    private pService: ProductService,
+    private router: Router,
+    public dialog: MatDialog,
+    private utilityService: UtilityService
+  ) {}
 
   ngOnInit() {
     this.refreshProducts();
@@ -34,34 +44,39 @@ export class PriceOverviewComponent implements OnInit {
 
   refreshProducts() {
     this.showSpinner = true;
-    this.pService.getProductsForQuery(0).subscribe(results => {
-      this.products = results.products;
-      //this.rowCount = results.rowCount;
-      this.showSpinner = false;
+    this.pService.getProductsForQuery(0).subscribe(
+      (results) => {
+        this.products = results.products;
+        //this.rowCount = results.rowCount;
+        this.showSpinner = false;
 
-      let index = 1;
-      this.products.forEach(product => {
-        this.priceData.push(
-          { lineNo: index, product: product.name, price1: product.unitPrice[0], price2: product.unitPrice[1] });
-        index++;
-      });
-      this.dataSource = this.priceData;
-    },
-      error => {
+        let index = 1;
+        this.products.forEach((product) => {
+          this.priceData.push({
+            lineNo: index,
+            product: product.name,
+            price1: product.unitPrice[0],
+            price2: product.unitPrice[1],
+          });
+          index++;
+        });
+        this.dataSource = this.priceData;
+      },
+      (error) => {
         this.showSpinner = false;
         this.dialog.open(ErrorDialog, {
           data: {
-            message: 'Error while fetching Products from server: ' +
-              this.utilityService.getError(error)
-          }, panelClass: 'custom-modalbox'
-
+            message:
+              'Error while fetching Products from server: ' +
+              this.utilityService.getError(error),
+          },
+          panelClass: 'custom-modalbox',
         });
-      });
-
+      }
+    );
   }
 
   onEditClicked(productName: string) {
     this.router.navigate(['/price-edit', productName]);
   }
-
 }
