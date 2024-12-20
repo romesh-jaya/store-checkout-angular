@@ -77,7 +77,7 @@ export class ProductComponent {
       if (this.productEl?.name) {
         this.priceEditService.editPrice.next(this.productEl.name);
       }
-    } else if (this.router.url.includes('manage-product')) {
+    } else if (this.router.url.includes('manage-products')) {
       if (this.productEl?.name) {
         this.productService.editProduct.next(this.productEl.name);
       }

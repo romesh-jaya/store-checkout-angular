@@ -3,7 +3,7 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { AuthGuard } from './guards/auth.guard';
-import { ProductListComponent } from './components/products/product-list/product-list.component';
+import { ManageProductsComponent } from './components/products/manage-products/manage-products.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -14,7 +14,7 @@ export const routes: Routes = [
   },
   {
     path: 'manage-products',
-    component: ProductListComponent,
+    component: ManageProductsComponent,
     canActivate: [AuthGuard],
   },
   { path: '**', component: PageNotFoundComponent },
