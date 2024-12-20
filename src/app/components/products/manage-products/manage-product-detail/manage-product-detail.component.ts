@@ -1,39 +1,39 @@
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { ProductService } from '../../../../services/product.service';
-import { NgForm } from '@angular/forms';
-import { ManageProductService } from '../manage-product.service';
-import { Product } from '../../../shared/product.model';
-import { ErrorDialog } from '../../../shared/error-dialog/error-dialog';
-import { MatDialog } from '@angular/material';
-import { UtilityService } from 'src/app/shared/utility.service';
+import { FormsModule, NgForm } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Product } from '../../../../models/product.model';
+import { UtilityService } from '../../../../services/utility.service';
+import { NotificationService } from '../../../../services/notification.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-manage-product-detail',
   templateUrl: './manage-product-detail.component.html',
+  standalone: true,
+  imports: [FormsModule, CommonModule],
   styleUrls: ['./manage-product-detail.component.css'],
 })
-export class AddProductDetailComponent implements OnInit {
-  @ViewChild('f', { static: false }) aPDForm: NgForm;
+export class ManageProductDetailComponent implements OnInit {
+  @ViewChild('f', { static: false }) aPDForm: NgForm | undefined;
   editMode = false;
-  productEdit: Product;
+  productEdit?: Product;
   productName = '';
   newPrice = '';
-  alert: string;
-  alertClass = '';
-  barcode: number;
+  barcode?: number;
   showSpinner = false;
 
   constructor(
     private pService: ProductService,
-    private aPService: ManageProductService,
     private renderer2: Renderer2,
     public dialog: MatDialog,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
-    this.aPService.editProduct.subscribe((productName) => {
-      this.aPDForm.reset();
+    this.pService.editProduct.subscribe((productName) => {
+      this.aPDForm?.reset();
       this.getProduct(productName);
     });
   }
@@ -55,14 +55,7 @@ export class AddProductDetailComponent implements OnInit {
       },
       (error) => {
         this.showSpinner = false;
-        this.dialog.open(ErrorDialog, {
-          data: {
-            message:
-              'Error while fetching Product from server: ' +
-              this.utilityService.getError(error),
-          },
-          panelClass: 'custom-modalbox',
-        });
+        this.notificationService.error(this.utilityService.getError(error));
       }
     );
   }
@@ -71,7 +64,7 @@ export class AddProductDetailComponent implements OnInit {
     this.productName = '';
     this.newPrice = '';
     this.editMode = false;
-    this.aPDForm.reset();
+    this.aPDForm?.reset();
     const firstElement = this.renderer2.selectRootElement('#name');
     firstElement.focus();
   }
@@ -81,44 +74,33 @@ export class AddProductDetailComponent implements OnInit {
   }
 
   onDelete() {
-    if (confirm('Are you sure you wish to delete this product?')) {
-      this.pService.removeItem(this.productEdit.serverId).subscribe(
-        () => {
-          this.alert = 'Product removed!';
-          this.alertClass = 'alert-success';
-          setTimeout(() => {
-            this.alert = ' ';
-            this.alertClass = '';
-          }, 2000);
-          this.customReset();
-        },
-        (error) => {
-          this.showSpinner = false;
-          this.dialog.open(ErrorDialog, {
-            data: {
-              message:
-                'Error while removing Product from server: ' +
-                this.utilityService.getError(error),
-            },
-            panelClass: 'custom-modalbox',
-          });
-        }
-      );
+    if (this.productEdit?.serverId) {
+      if (confirm('Are you sure you wish to delete this product?')) {
+        this.pService.removeItem(this.productEdit?.serverId).subscribe(
+          () => {
+            this.notificationService.success('Product removed.');
+            this.customReset();
+          },
+          (error) => {
+            this.showSpinner = false;
+            this.notificationService.error(this.utilityService.getError(error));
+          }
+        );
+      }
     }
   }
 
   onAddEditProduct(form: NgForm) {
     const value = form.value;
-    let newBarcode: number;
+    let newBarcode = 0;
     let newProduct;
 
     if (!this.editMode) {
       // validations
       if (value.newPrice === null || value.newPrice === '') {
-        this.dialog.open(ErrorDialog, {
-          data: { message: 'Price is required when a new product is entered.' },
-          panelClass: 'custom-modalbox',
-        });
+        this.notificationService.error(
+          'Price is required when a new product is entered.'
+        );
         return;
       }
 
@@ -132,49 +114,40 @@ export class AddProductDetailComponent implements OnInit {
 
       this.pService.addItem(newProduct).subscribe(
         () => {
-          this.alert = 'Product ' + value.name + ' added successfully!';
-          this.alertClass = 'alert-success';
-          setTimeout(() => {
-            this.alert = ' ';
-            this.alertClass = '';
-          }, 2000);
+          this.notificationService.success(
+            this.utilityService.getError(
+              'Product ' + this.productName + ' added successfully!'
+            )
+          );
           this.showSpinner = false;
           this.customReset();
         },
         (error) => {
           this.showSpinner = false;
-          this.dialog.open(ErrorDialog, {
-            data: {
-              message:
-                'Error while saving: ' + this.utilityService.getError(error),
-            },
-            panelClass: 'custom-modalbox',
-          });
+          this.notificationService.error(this.utilityService.getError(error));
         }
       );
       this.showSpinner = true;
     } else {
       // Product being  edited
-      this.showSpinner = true;
-      this.pService.editBarcode(this.productEdit, +value.barcode).subscribe(
-        () => {
-          this.alert = 'Product ' + this.productName + ' updated successfully!';
-          this.alertClass = 'alert-success';
-          setTimeout(() => {
-            this.alert = ' ';
-            this.alertClass = '';
-          }, 2000);
-          this.customReset();
-          this.showSpinner = false;
-        },
-        (error) => {
-          this.showSpinner = false;
-          this.dialog.open(ErrorDialog, {
-            data: { message: 'Error while updating Product: ' + error.message },
-            panelClass: 'custom-modalbox',
-          });
-        }
-      );
+      if (this.productEdit) {
+        this.showSpinner = true;
+        this.pService.editBarcode(this.productEdit, +value.barcode).subscribe(
+          () => {
+            this.customReset();
+            this.showSpinner = false;
+            this.notificationService.success(
+              this.utilityService.getError(
+                'Product ' + this.productName + ' updated successfully!'
+              )
+            );
+          },
+          (error) => {
+            this.showSpinner = false;
+            this.notificationService.error(this.utilityService.getError(error));
+          }
+        );
+      }
     }
   }
 }

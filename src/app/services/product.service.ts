@@ -3,11 +3,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { Product } from '../models/product.model';
+import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
   baseURL = environment.nodeEndPoint + '/products';
   errorOccured = false;
+  editProduct = new Subject<string>();
 
   constructor(private http: HttpClient) {}
 
