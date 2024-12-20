@@ -27,6 +27,13 @@
       </div>
     </mat-radio-group>
   </div>
+  <div *ngIf="products">
+    <app-product
+      *ngFor="let product of products; index as i"
+      [productEl]="product"
+      [index]="i + 1"
+    ></app-product>
+  </div>
   <mat-paginator
     *ngIf="searchedAtLeastOnce && !showSpinner"
     [length]="rowCount"

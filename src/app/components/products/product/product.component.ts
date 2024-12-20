@@ -1,67 +1,86 @@
 import { Component, Input } from '@angular/core';
 
-import { Product } from '../../shared/product.model';
-import { InputDialog } from '../input-dialog/input-dialog';
-import { ErrorDialog } from '../../shared/error-dialog/error-dialog';
-import { MatDialogRef, MatDialog } from '@angular/material';
-import { ShoppingCartService } from '../../shopping-cart/shopping-cart.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PriceEditService } from '../price-edit/price-edit.service';
-import { ManageProductService } from '../manage-product/manage-product.service';
-
-
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { Product } from '../../../models/product.model';
+import { InputDialog } from '../input-dialog/input-dialog';
+import { NotificationService } from '../../../services/notification.service';
+import { ShoppingCartService } from '../../../services/shopping-cart.service';
+import { ProductService } from '../../../services/product.service';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css']
+  standalone: true,
+  imports: [],
+  styleUrls: ['./product.component.css'],
 })
 export class ProductComponent {
-  @Input() productEl: Product;
-  @Input() index: number;
-  inputDialogRef: MatDialogRef<InputDialog>;
+  @Input() productEl?: Product;
+  @Input() index = 0;
+  inputDialogRef?: MatDialogRef<InputDialog>;
 
-  constructor(public dialog: MatDialog, private sCService: ShoppingCartService,
-    private route: ActivatedRoute, private pEService: PriceEditService,
-    private aPService: ManageProductService) { }
+  constructor(
+    public dialog: MatDialog,
+    private sCService: ShoppingCartService,
+    private router: Router,
+    private priceEditService: PriceEditService,
+    private notificationService: NotificationService,
+    private productService: ProductService
+  ) {}
 
   onItemClicked() {
-    if (this.route.snapshot['_routerState'].url.includes('shopping-cart')) {
+    if (this.router.url.includes('shopping-cart')) {
       this.inputDialogRef = this.dialog.open(InputDialog, {
         disableClose: false,
         width: '500px',
-        data: { price: this.productEl.unitPrice }
+        data: { price: this.productEl?.unitPrice },
       });
 
-      this.inputDialogRef.afterClosed().subscribe(result => {
+      this.inputDialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          if (isNaN(+result.qty) || ((result.discount) && isNaN(+result.discount))) {
-            this.dialog.open(ErrorDialog, {
-              data: { message: 'Please enter valid quantity and discount.' },
-              panelClass: 'custom-modalbox'
-            });
+          if (
+            isNaN(+result.qty) ||
+            (result.discount && isNaN(+result.discount))
+          ) {
+            this.notificationService.error(
+              'Please enter valid quantity and discount.'
+            );
             return;
-          } else if ((result.discount) && ((+result.discount > 100) || (+result.discount < 0))) {
-            this.dialog.open(ErrorDialog, { data: { message: 'Discount must be between 0 and 100.' }, panelClass: 'custom-modalbox' });
+          } else if (
+            result.discount &&
+            (+result.discount > 100 || +result.discount < 0)
+          ) {
+            this.notificationService.error(
+              'Discount must be between 0 and 100.'
+            );
             return;
           }
           if (+result.qty <= 0) {
-            this.dialog.open(ErrorDialog, { data: { message: 'Quantity must be greater than 0.' }, panelClass: 'custom-modalbox' });
+            this.notificationService.error('Quantity must be greater than 0.');
             return;
           }
-          const discountCalc = (result.discount == null) ? 0 : +result.discount;
+          const discountCalc = result.discount == null ? 0 : +result.discount;
 
-          this.sCService.addItem(this.productEl.name, (result.selectedPrice * (1 - (discountCalc / 100))),
-            +result.qty);
+          if (this.productEl?.name) {
+            this.sCService.addItem(
+              this.productEl.name,
+              result.selectedPrice * (1 - discountCalc / 100),
+              +result.qty
+            );
+          }
         }
-        this.inputDialogRef = null;
+        this.inputDialogRef = undefined;
       });
-
-    } else if (this.route.snapshot['_routerState'].url.includes('price-edit')) {
-      this.pEService.editPrice.next(this.productEl.name);
-    } else if (this.route.snapshot['_routerState'].url.includes('manage-product')) {
-      this.aPService.editProduct.next(this.productEl.name);
+    } else if (this.router.url.includes('price-edit')) {
+      if (this.productEl?.name) {
+        this.priceEditService.editPrice.next(this.productEl.name);
+      }
+    } else if (this.router.url.includes('manage-product')) {
+      if (this.productEl?.name) {
+        this.productService.editProduct.next(this.productEl.name);
+      }
     }
   }
 }
-

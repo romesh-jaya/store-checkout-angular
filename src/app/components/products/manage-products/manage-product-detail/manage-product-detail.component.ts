@@ -24,7 +24,7 @@ export class ManageProductDetailComponent implements OnInit {
   showSpinner = false;
 
   constructor(
-    private pService: ProductService,
+    private productService: ProductService,
     private renderer2: Renderer2,
     public dialog: MatDialog,
     private utilityService: UtilityService,
@@ -32,7 +32,7 @@ export class ManageProductDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.pService.editProduct.subscribe((productName) => {
+    this.productService.editProduct.subscribe((productName) => {
       this.aPDForm?.reset();
       this.getProduct(productName);
     });
@@ -40,7 +40,7 @@ export class ManageProductDetailComponent implements OnInit {
 
   getProduct(name: string) {
     this.showSpinner = true;
-    this.pService.getProduct(name).subscribe(
+    this.productService.getProduct(name).subscribe(
       (retProduct) => {
         this.showSpinner = false;
         this.productEdit = retProduct;
@@ -76,7 +76,7 @@ export class ManageProductDetailComponent implements OnInit {
   onDelete() {
     if (this.productEdit?.serverId) {
       if (confirm('Are you sure you wish to delete this product?')) {
-        this.pService.removeItem(this.productEdit?.serverId).subscribe(
+        this.productService.removeItem(this.productEdit?.serverId).subscribe(
           () => {
             this.notificationService.success('Product removed.');
             this.customReset();
@@ -112,7 +112,7 @@ export class ManageProductDetailComponent implements OnInit {
       newProduct = new Product(value.name, [+value.newPrice], newBarcode);
       this.showSpinner = true;
 
-      this.pService.addItem(newProduct).subscribe(
+      this.productService.addItem(newProduct).subscribe(
         () => {
           this.notificationService.success(
             this.utilityService.getError(
@@ -132,21 +132,25 @@ export class ManageProductDetailComponent implements OnInit {
       // Product being  edited
       if (this.productEdit) {
         this.showSpinner = true;
-        this.pService.editBarcode(this.productEdit, +value.barcode).subscribe(
-          () => {
-            this.customReset();
-            this.showSpinner = false;
-            this.notificationService.success(
-              this.utilityService.getError(
-                'Product ' + this.productName + ' updated successfully!'
-              )
-            );
-          },
-          (error) => {
-            this.showSpinner = false;
-            this.notificationService.error(this.utilityService.getError(error));
-          }
-        );
+        this.productService
+          .editBarcode(this.productEdit, +value.barcode)
+          .subscribe(
+            () => {
+              this.customReset();
+              this.showSpinner = false;
+              this.notificationService.success(
+                this.utilityService.getError(
+                  'Product ' + this.productName + ' updated successfully!'
+                )
+              );
+            },
+            (error) => {
+              this.showSpinner = false;
+              this.notificationService.error(
+                this.utilityService.getError(error)
+              );
+            }
+          );
       }
     }
   }

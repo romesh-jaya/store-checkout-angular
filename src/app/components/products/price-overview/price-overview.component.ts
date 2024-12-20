@@ -32,7 +32,7 @@ export class PriceOverviewComponent implements OnInit {
   dataSource;
 
   constructor(
-    private pService: ProductService,
+    private productService: ProductService,
     private router: Router,
     public dialog: MatDialog,
     private utilityService: UtilityService
@@ -44,7 +44,7 @@ export class PriceOverviewComponent implements OnInit {
 
   refreshProducts() {
     this.showSpinner = true;
-    this.pService.getProductsForQuery(0).subscribe(
+    this.productService.getProductsForQuery(0).subscribe(
       (results) => {
         this.products = results.products;
         //this.rowCount = results.rowCount;

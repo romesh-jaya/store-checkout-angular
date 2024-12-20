@@ -11,6 +11,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ProductComponent } from '../product/product.component';
 
 @Component({
   selector: 'app-product-list',
@@ -22,6 +23,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     CommonModule,
     FormsModule,
     FontAwesomeModule,
+    ProductComponent,
   ],
   styleUrls: ['./product-list.component.css'],
 })
@@ -39,7 +41,7 @@ export class ProductListComponent implements OnInit {
   pageIndex = 0;
 
   constructor(
-    private pService: ProductService,
+    private productService: ProductService,
     public dialog: MatDialog,
     private utilityService: UtilityService,
     private notificationService: NotificationService
@@ -98,7 +100,7 @@ export class ProductListComponent implements OnInit {
 
     this.showSpinner = true;
     this.pageIndex = pageNo ? pageNo : 0;
-    this.pService
+    this.productService
       .getProductsForQuery(
         this.pageIndex,
         isQuery ? this.searchString : '',

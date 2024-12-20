@@ -22,7 +22,7 @@ export class PriceEditDetailComponent implements OnInit {
 
   constructor(
     private pEService: PriceEditService,
-    private pService: ProductService,
+    private productService: ProductService,
     public dialog: MatDialog,
     private utilityService: UtilityService
   ) {}
@@ -36,7 +36,7 @@ export class PriceEditDetailComponent implements OnInit {
 
   getProduct(name: string) {
     this.showSpinner = true;
-    this.pService.getProduct(name).subscribe(
+    this.productService.getProduct(name).subscribe(
       (retProduct) => {
         this.showSpinner = false;
         this.product = retProduct;
@@ -84,7 +84,7 @@ export class PriceEditDetailComponent implements OnInit {
       return;
     }
     this.showSpinner = true;
-    this.pService.updatePrice(this.product, returnPrices).subscribe(
+    this.productService.updatePrice(this.product, returnPrices).subscribe(
       () => {
         this.alert = 'Price updated successfully!';
         this.alertClass = 'alert-success';
