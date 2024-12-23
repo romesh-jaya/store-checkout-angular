@@ -138,13 +138,13 @@ $light-theme: mat.define-theme(
       theme-type: light,
       primary: $_primary,
       tertiary: $_tertiary,
-      use-system-variables: true,
     ),
-    typography: (
-      use-system-variables: true,
-    ),
+    typography: (),
   )
 );
-html {
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+:root {
   @include mat.all-component-themes($light-theme);
 }
