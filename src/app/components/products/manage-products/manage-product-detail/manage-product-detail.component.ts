@@ -69,7 +69,7 @@ export class ManageProductDetailComponent implements OnInit {
     firstElement.focus();
   }
 
-  onAddProduct() {
+  onCancelClicked() {
     this.customReset();
   }
 
@@ -93,7 +93,7 @@ export class ManageProductDetailComponent implements OnInit {
   onAddEditProduct(form: NgForm) {
     const value = form.value;
     let newBarcode = 0;
-    let newProduct;
+    let newProduct: Product;
 
     if (!this.editMode) {
       // validations
@@ -122,9 +122,7 @@ export class ManageProductDetailComponent implements OnInit {
       this.productService.addItem(newProduct).subscribe(
         () => {
           this.notificationService.success(
-            this.utilityService.getError(
-              'Product ' + this.productName + ' added successfully'
-            )
+            'Product ' + newProduct.name + ' added successfully'
           );
           this.showSpinner = false;
           this.customReset();
@@ -146,9 +144,7 @@ export class ManageProductDetailComponent implements OnInit {
               this.customReset();
               this.showSpinner = false;
               this.notificationService.success(
-                this.utilityService.getError(
-                  'Product ' + this.productName + ' updated successfully'
-                )
+                'Product ' + this.productEdit?.name + ' updated successfully'
               );
             },
             (error) => {
