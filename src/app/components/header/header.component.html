@@ -1,66 +1,95 @@
 <div>
-  <nav class="navbar navbar-toggleable-md navbar-light bg-light px-2 mb-2">
+  <nav class="navbar navbar-toggleable-md navbar-light bg-light px-2 mb-4">
     <div class="d-flex">
-      <nav class="navbar navbar-toggleable-md navbar-light bg-light ps-2">
-        <div
-          class="navbar-brand"
-          ngbDropdown
-          #mainMenu="ngbDropdown"
-          *ngIf="isAuthenticated"
+      <div
+        class="navbar-brand"
+        ngbDropdown
+        #mainMenu="ngbDropdown"
+        *ngIf="isAuthenticated"
+      >
+        <button
+          class="nav-link dropdown-toggle main-menu ms-2"
+          style="background-color: transparent; font-size: 13px !important"
+          id="dropdownManual"
+          ngbDropdownAnchor
+          (focus)="mainMenu.open()"
         >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownManual">
           <button
-            class="nav-link dropdown-toggle main-menu"
-            style="background-color: transparent; font-size: 13px !important"
-            id="dropdownManual"
-            ngbDropdownAnchor
-            (focus)="mainMenu.open()"
+            class="dropdown-item"
+            ngbDropdownItem
+            (click)="
+              setCurrentScreenName('Shopping Cart');
+              router.navigate(['/shopping-cart'])
+            "
           >
-            <span class="navbar-toggler-icon"></span>
+            Shopping Cart
           </button>
-          <div ngbDropdownMenu aria-labelledby="dropdownManual">
-            <button
-              class="dropdown-item"
-              ngbDropdownItem
-              (click)="router.navigate(['/shopping-cart'])"
-            >
-              Shopping Cart
-            </button>
-            <button
-              *ngIf="isAdmin || isSuperUser"
-              class="dropdown-item"
-              ngbDropdownItem
-              (click)="router.navigate(['/price-edit'])"
-            >
-              Edit Prices
-            </button>
-            <button
-              *ngIf="isAdmin || isSuperUser"
-              class="dropdown-item"
-              ngbDropdownItem
-              (click)="router.navigate(['/manage-products'])"
-            >
-              Manage Products
-            </button>
-            <button
-              *ngIf="isAdmin || isSuperUser"
-              class="dropdown-item"
-              ngbDropdownItem
-              (click)="router.navigate(['/price-overview'])"
-            >
-              Price Overview
-            </button>
-            <button
-              *ngIf="isSuperUser"
-              class="dropdown-item"
-              ngbDropdownItem
-              (click)="router.navigate(['/users'])"
-            >
-              Configured Users
-            </button>
-          </div>
+          <button
+            *ngIf="isAdmin || isSuperUser"
+            class="dropdown-item"
+            ngbDropdownItem
+            (click)="
+              setCurrentScreenName('Edit Prices');
+              router.navigate(['/price-edit'])
+            "
+          >
+            Edit Prices
+          </button>
+          <button
+            *ngIf="isAdmin || isSuperUser"
+            class="dropdown-item"
+            ngbDropdownItem
+            (click)="
+              setCurrentScreenName('Manage Products');
+              router.navigate(['/manage-products'])
+            "
+          >
+            Manage Products
+          </button>
+          <button
+            *ngIf="isAdmin || isSuperUser"
+            class="dropdown-item"
+            ngbDropdownItem
+            (click)="
+              setCurrentScreenName('Price Overview');
+              router.navigate(['/price-overview'])
+            "
+          >
+            Price Overview
+          </button>
+          <button
+            *ngIf="isSuperUser"
+            class="dropdown-item"
+            ngbDropdownItem
+            (click)="
+              setCurrentScreenName('Configured Users');
+              router.navigate(['/users'])
+            "
+          >
+            Configured Users
+          </button>
         </div>
-      </nav>
-      <a routerLink="/" class="navbar-brand ps-4">Store Checkout</a>
+      </div>
+      <div aria-label="breadcrumb">
+        <div class="ps-4">
+          <span
+            class="navbar-brand pointer"
+            aria-current="page"
+            (click)="setCurrentScreenName(''); router.navigate(['/'])"
+            >Store Checkout</span
+          >
+          <span
+            class="navbar-brand"
+            aria-current="page"
+            *ngIf="currentScreenName"
+          >
+            &gt; {{ currentScreenName }}
+          </span>
+        </div>
+      </div>
     </div>
 
     <div style="float: right; margin-right: 10px">

@@ -17,6 +17,8 @@ export class HeaderComponent implements OnInit {
   isAdmin = false;
   isSuperUser = false;
   loggedInUser: any;
+  currentScreenName = '';
+
   constructor(
     private authService: AuthService,
     private lIDService: LoggedInDataService,
@@ -29,6 +31,14 @@ export class HeaderComponent implements OnInit {
     this.lIDService.loginChanged.subscribe(() => {
       this.refreshInfo();
     });
+
+    this.lIDService.currentScreenName.subscribe((name) => {
+      this.currentScreenName = name;
+    });
+  }
+
+  setCurrentScreenName(name: string) {
+    this.currentScreenName = name;
   }
 
   refreshInfo() {

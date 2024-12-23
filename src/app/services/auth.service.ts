@@ -202,6 +202,7 @@ export class AuthService {
   logout() {
     this.lIDService.loggedInUser = undefined;
     this.lIDService.loginChanged.next(null);
+    this.lIDService.currentScreenName.next('');
     this.router.navigate(['/']);
     this.cookieService.remove('AuthUser');
   }
