@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductListComponent } from '../product-list/product-list.component';
 import { ManageProductDetailComponent } from './manage-product-detail/manage-product-detail.component';
+import { LoggedInDataService } from '../../../services/logged-in-data.service';
 
 @Component({
   selector: 'app-manage-product',
@@ -9,4 +10,10 @@ import { ManageProductDetailComponent } from './manage-product-detail/manage-pro
   imports: [ManageProductDetailComponent, ProductListComponent],
   styleUrls: ['./manage-products.component.css'],
 })
-export class ManageProductsComponent {}
+export class ManageProductsComponent implements OnInit {
+  constructor(private lIDService: LoggedInDataService) {}
+
+  ngOnInit(): void {
+    this.lIDService.currentScreenName.next('Manage Products');
+  }
+}

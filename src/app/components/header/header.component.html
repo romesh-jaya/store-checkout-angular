@@ -42,10 +42,7 @@
             *ngIf="isAdmin || isSuperUser"
             class="dropdown-item"
             ngbDropdownItem
-            (click)="
-              setCurrentScreenName('Manage Products');
-              router.navigate(['/manage-products'])
-            "
+            (click)="router.navigate(['/manage-products'])"
           >
             Manage Products
           </button>
@@ -82,7 +79,7 @@
             >Store Checkout</span
           >
           <span
-            class="navbar-brand"
+            class="navbar-brand fw-light"
             aria-current="page"
             *ngIf="currentScreenName"
           >
