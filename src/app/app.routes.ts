@@ -4,6 +4,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ManageProductsComponent } from './components/products/manage-products/manage-products.component';
+import { PriceOverviewComponent } from './components/products/price-overview/price-overview.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -15,6 +16,11 @@ export const routes: Routes = [
   {
     path: 'manage-products',
     component: ManageProductsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'price-overview',
+    component: PriceOverviewComponent,
     canActivate: [AuthGuard],
   },
   { path: '**', component: PageNotFoundComponent },

@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../../services/product.service';
-import { Product } from '../../shared/product.model';
 import { Router } from '@angular/router';
-import { ErrorDialog } from '../../shared/error-dialog/error-dialog';
-import { MatDialog } from '@angular/material';
-import { UtilityService } from 'src/app/shared/utility.service';
+import { Product } from '../../../models/product.model';
+import { NotificationService } from '../../../services/notification.service';
+import { UtilityService } from '../../../services/utility.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { LoggedInDataService } from '../../../services/logged-in-data.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 export interface PriceData {
   lineNo: number;
@@ -17,6 +21,8 @@ export interface PriceData {
   selector: 'app-price-overview',
   templateUrl: './price-overview.component.html',
   styleUrls: ['./price-overview.component.css'],
+  standalone: true,
+  imports: [MatCardModule, MatButtonModule, CommonModule, FormsModule],
 })
 export class PriceOverviewComponent implements OnInit {
   products: Product[] = [];
@@ -29,17 +35,19 @@ export class PriceOverviewComponent implements OnInit {
     'price2',
     'edit',
   ];
-  dataSource;
+  dataSource: any;
 
   constructor(
     private productService: ProductService,
     private router: Router,
-    public dialog: MatDialog,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private notificationService: NotificationService,
+    private lIDService: LoggedInDataService
   ) {}
 
   ngOnInit() {
     this.refreshProducts();
+    this.lIDService.currentScreenName.next('Price Overview');
   }
 
   refreshProducts() {
@@ -47,7 +55,6 @@ export class PriceOverviewComponent implements OnInit {
     this.productService.getProductsForQuery(0).subscribe(
       (results) => {
         this.products = results.products;
-        //this.rowCount = results.rowCount;
         this.showSpinner = false;
 
         let index = 1;
@@ -64,14 +71,7 @@ export class PriceOverviewComponent implements OnInit {
       },
       (error) => {
         this.showSpinner = false;
-        this.dialog.open(ErrorDialog, {
-          data: {
-            message:
-              'Error while fetching Products from server: ' +
-              this.utilityService.getError(error),
-          },
-          panelClass: 'custom-modalbox',
-        });
+        this.notificationService.error(this.utilityService.getError(error));
       }
     );
   }
