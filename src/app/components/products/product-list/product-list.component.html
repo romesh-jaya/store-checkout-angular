@@ -4,9 +4,13 @@
     <fa-icon
       [icon]="faDownload"
       (click)="onPopulateClicked()"
-      style="margin-right: 3px"
+      class="p-2 me-2 pointer"
     ></fa-icon>
-    <fa-icon [icon]="faSearch" (click)="onSearchClicked()"></fa-icon>
+    <fa-icon
+      [icon]="faSearch"
+      (click)="onSearchClicked()"
+      class="p-2 me-2 pointer"
+    ></fa-icon>
     <input
       [(ngModel)]="searchString"
       class="form-control form-control-sm ml-3 w-75"
@@ -16,7 +20,7 @@
       (keyup.enter)="onSearchClicked()"
     />
   </div>
-  <div>
+  <div class="mb-4">
     <mat-radio-group [(ngModel)]="queryUsing"
       >Query using:
       <div style="margin-top: 10px">

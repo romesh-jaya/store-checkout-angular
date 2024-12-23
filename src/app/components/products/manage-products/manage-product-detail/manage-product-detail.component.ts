@@ -99,7 +99,14 @@ export class ManageProductDetailComponent implements OnInit {
       // validations
       if (value.newPrice === null || value.newPrice === '') {
         this.notificationService.error(
-          'Price is required when a new product is entered.'
+          'Price is required when a new product is entered'
+        );
+        return;
+      }
+
+      if (value.newPrice < 0) {
+        this.notificationService.error(
+          'Please enter a non-negative value for price'
         );
         return;
       }
@@ -116,7 +123,7 @@ export class ManageProductDetailComponent implements OnInit {
         () => {
           this.notificationService.success(
             this.utilityService.getError(
-              'Product ' + this.productName + ' added successfully!'
+              'Product ' + this.productName + ' added successfully'
             )
           );
           this.showSpinner = false;
@@ -140,7 +147,7 @@ export class ManageProductDetailComponent implements OnInit {
               this.showSpinner = false;
               this.notificationService.success(
                 this.utilityService.getError(
-                  'Product ' + this.productName + ' updated successfully!'
+                  'Product ' + this.productName + ' updated successfully'
                 )
               );
             },

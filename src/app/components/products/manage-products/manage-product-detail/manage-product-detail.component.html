@@ -32,39 +32,32 @@
         class="form-control"
       />
     </div>
-    <hr />
-    <div class="row">
-      <div style="float: left">
-        <button
-          class="btn btn-success"
-          type="submit"
-          [disabled]="!f.valid || !f.dirty"
-          style="margin-right: 10px"
-        >
-          {{ editMode ? "Update" : "Add" }}
-        </button>
-      </div>
-      <div [hidden]="!editMode" style="float: left">
-        <button
-          class="btn btn-primary"
-          type="button"
-          (click)="onAddProduct()"
-          style="margin-right: 10px"
-        >
-          Add Product...
-        </button>
-      </div>
-      <div [hidden]="!editMode" style="float: left">
-        <button class="btn btn-danger" type="button" (click)="onDelete()">
-          Delete
-        </button>
-      </div>
-    </div>
-    <div *ngIf="!price.valid && price.dirty">
-      <hr />
-      <span class="help-block"
-        >Please enter a non-negative value for price.</span
+    <div class="d-flex mt-3">
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="!f.valid || !f.dirty"
+        style="margin-right: 10px"
       >
+        {{ editMode ? "Update" : "Add" }}
+      </button>
+      <button
+        [hidden]="!editMode"
+        class="btn btn-outline-primary"
+        type="button"
+        (click)="onAddProduct()"
+        style="margin-right: 10px"
+      >
+        Cancel
+      </button>
+      <button
+        [hidden]="!editMode"
+        class="btn btn-outline-danger"
+        type="button"
+        (click)="onDelete()"
+      >
+        Delete
+      </button>
     </div>
   </form>
 </div>
