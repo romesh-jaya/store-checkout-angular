@@ -20,7 +20,7 @@ export interface PriceData {
 @Component({
   selector: 'app-price-overview',
   templateUrl: './price-overview.component.html',
-  styleUrls: ['./price-overview.component.css'],
+  styleUrls: ['./price-overview.component.scss'],
   standalone: true,
   imports: [MatCardModule, MatButtonModule, CommonModule, FormsModule],
 })
@@ -28,13 +28,6 @@ export class PriceOverviewComponent implements OnInit {
   products: Product[] = [];
   showSpinner = false;
   priceData: PriceData[] = [];
-  displayedColumns: string[] = [
-    'lineNo',
-    'product',
-    'price1',
-    'price2',
-    'edit',
-  ];
   dataSource: any;
 
   constructor(

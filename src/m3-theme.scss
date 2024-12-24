@@ -139,7 +139,10 @@ $light-theme: mat.define-theme(
       primary: $_primary,
       tertiary: $_tertiary,
     ),
-    typography: (),
+    typography: (
+      plain-family:
+        'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+    ),
   )
 );
 // Include theme styles for core and each component used in your app.
