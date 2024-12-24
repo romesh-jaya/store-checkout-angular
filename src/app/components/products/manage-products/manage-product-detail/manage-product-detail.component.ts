@@ -6,12 +6,13 @@ import { Product } from '../../../../models/product.model';
 import { UtilityService } from '../../../../services/utility.service';
 import { NotificationService } from '../../../../services/notification.service';
 import { CommonModule } from '@angular/common';
+import { OnlyNumberDirective } from '../../../../directives/onlynumber.directive';
 
 @Component({
   selector: 'app-manage-product-detail',
   templateUrl: './manage-product-detail.component.html',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, OnlyNumberDirective],
   styleUrls: ['./manage-product-detail.component.css'],
 })
 export class ManageProductDetailComponent implements OnInit {
@@ -108,6 +109,11 @@ export class ManageProductDetailComponent implements OnInit {
         this.notificationService.error(
           'Please enter a non-negative value for price'
         );
+        return;
+      }
+
+      if (!value.name) {
+        this.notificationService.error('Please enter product name');
         return;
       }
 
