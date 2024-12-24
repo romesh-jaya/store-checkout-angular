@@ -5,6 +5,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { AuthGuard } from './guards/auth.guard';
 import { ManageProductsComponent } from './components/products/manage-products/manage-products.component';
 import { PriceOverviewComponent } from './components/products/price-overview/price-overview.component';
+import { PriceEditComponent } from './components/products/price-edit/price-edit.component';
+import { AdminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -16,12 +18,28 @@ export const routes: Routes = [
   {
     path: 'manage-products',
     component: ManageProductsComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AdminGuard],
   },
   {
     path: 'price-overview',
     component: PriceOverviewComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AdminGuard],
   },
+  {
+    path: 'price-edit',
+    component: PriceEditComponent,
+    canActivate: [AdminGuard],
+    children: [
+      {
+        path: '',
+        component: PriceEditComponent,
+      },
+      {
+        path: ':name',
+        component: PriceEditComponent,
+      },
+    ],
+  },
+
   { path: '**', component: PageNotFoundComponent },
 ];

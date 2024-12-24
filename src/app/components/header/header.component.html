@@ -31,10 +31,7 @@
             *ngIf="isAdmin || isSuperUser"
             class="dropdown-item"
             ngbDropdownItem
-            (click)="
-              setCurrentScreenName('Edit Prices');
-              router.navigate(['/price-edit'])
-            "
+            (click)="router.navigate(['/price-edit'])"
           >
             Edit Prices
           </button>
@@ -50,10 +47,7 @@
             *ngIf="isAdmin || isSuperUser"
             class="dropdown-item"
             ngbDropdownItem
-            (click)="
-              setCurrentScreenName('Price Overview');
-              router.navigate(['/price-overview'])
-            "
+            (click)="router.navigate(['/price-overview'])"
           >
             Price Overview
           </button>
