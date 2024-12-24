@@ -2,18 +2,22 @@ import { CanActivate, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LoggedInDataService } from '../services/logged-in-data.service';
+import { NotificationService } from '../services/notification.service';
+import { pleaseLoginMessage, noAccessMessage } from '../constants/constants';
 
 @Injectable({ providedIn: 'root' })
 export class AdminGuard implements CanActivate {
   constructor(
     private lIDService: LoggedInDataService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) {}
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     const user = this.lIDService.loggedInUser;
 
     if (!user) {
+      this.notificationService.error(pleaseLoginMessage);
       return this.router.navigate(['/']);
     }
 
@@ -21,6 +25,8 @@ export class AdminGuard implements CanActivate {
       return true;
     }
 
-    return this.router.navigate(['/no-access']);
+    this.notificationService.error(noAccessMessage);
+
+    return this.router.navigate(['/']);
   }
 }
