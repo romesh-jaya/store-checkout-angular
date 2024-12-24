@@ -1,8 +1,22 @@
 <div class="container-price m-auto">
-  <mat-card appearance="outlined" *ngFor="let row of dataSource">
-    <mat-card-header>
-      <mat-card-title>{{ row.product }}</mat-card-title>
-      <mat-card-subtitle>{{ row.price1 }} {{ row.price2 }}</mat-card-subtitle>
+  <mat-card appearance="outlined" *ngFor="let row of dataSource" class="mb-2">
+    <mat-card-header class="pb-2">
+      <mat-card-title class="fs-5">{{ row.product }}</mat-card-title>
+      <mat-card-subtitle>
+        <mat-chip-set aria-label="Prices">
+          <mat-chip class="bg-primary-subtle">{{ row.price1 }}</mat-chip>
+          <mat-chip *ngIf="row.price2" class="bg-secondary-subtle"
+            >{{ row.price2 }}
+          </mat-chip>
+          <mat-chip>
+            <fa-icon
+              [icon]="faEdit"
+              (click)="onEditClicked(row.product)"
+              class="p-2 me-2 pointer"
+            ></fa-icon>
+          </mat-chip>
+        </mat-chip-set>
+      </mat-card-subtitle>
     </mat-card-header>
   </mat-card>
 </div>

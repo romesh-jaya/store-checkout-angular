@@ -9,6 +9,9 @@ import { MatCardModule } from '@angular/material/card';
 import { LoggedInDataService } from '../../../services/logged-in-data.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatChipsModule } from '@angular/material/chips';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 export interface PriceData {
   lineNo: number;
@@ -22,13 +25,21 @@ export interface PriceData {
   templateUrl: './price-overview.component.html',
   styleUrls: ['./price-overview.component.scss'],
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, CommonModule, FormsModule],
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    CommonModule,
+    FormsModule,
+    MatChipsModule,
+    FontAwesomeModule,
+  ],
 })
 export class PriceOverviewComponent implements OnInit {
   products: Product[] = [];
   showSpinner = false;
   priceData: PriceData[] = [];
   dataSource: any;
+  faEdit = faEdit;
 
   constructor(
     private productService: ProductService,
