@@ -43,17 +43,11 @@
         <button
           class="btn btn-primary"
           type="submit"
-          [disabled]="!f.valid || !f.dirty"
+          [disabled]="!f.dirty"
           style="margin-right: 10px"
         >
           Update
         </button>
-      </div>
-      <div *ngIf="!f.valid && f.dirty">
-        <hr />
-        <span class="help-block"
-          >Please enter a non-negative value for price.</span
-        >
       </div>
     </div>
   </form>

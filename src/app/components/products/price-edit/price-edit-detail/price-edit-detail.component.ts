@@ -62,13 +62,30 @@ export class PriceEditDetailComponent implements OnInit {
     );
   }
 
+  validatePrices() {
+    let isValid = true;
+    this.updatedPrice.forEach((newPrice) => {
+      if (isValid && newPrice.price && newPrice.price < 0) {
+        isValid = false;
+        this.notificationService.error(
+          'Please enter a non-negative value for price'
+        );
+      }
+    });
+    return isValid;
+  }
+
   onUpdate(form: NgForm) {
     const returnPrices: number[] = [];
+
+    if (!this.validatePrices()) {
+      return;
+    }
 
     this.updatedPrice.forEach((newPrice) => {
       // remove duplicated
       if (!returnPrices.find((returnPrice) => returnPrice === newPrice.price)) {
-        if (newPrice.price) {
+        if (newPrice.price !== undefined) {
           returnPrices.push(+newPrice.price.toFixed(2));
         }
       }
