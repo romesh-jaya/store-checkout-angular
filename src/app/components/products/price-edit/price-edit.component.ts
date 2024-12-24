@@ -1,6 +1,6 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, Input } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { PriceEditService } from './price-edit.service';
+import { PriceEditService } from '../../../services/price-edit.service';
 import { PriceEditDetailComponent } from './price-edit-detail/price-edit-detail.component';
 import { ProductListComponent } from '../product-list/product-list.component';
 import { LoggedInDataService } from '../../../services/logged-in-data.service';
@@ -12,34 +12,20 @@ import { LoggedInDataService } from '../../../services/logged-in-data.service';
   standalone: true,
   imports: [ProductListComponent, PriceEditDetailComponent],
 })
-export class PriceEditComponent implements AfterViewInit {
-  productName = '';
+export class PriceEditComponent {
   showSpinner = false;
+  productName = '';
 
-  constructor(
-    private route: ActivatedRoute,
-    private pEService: PriceEditService,
-    private lIDService: LoggedInDataService
-  ) {}
+  @Input()
+  set name(name: string) {
+    if (name) {
+      this.productName = name;
+    }
+  }
+
+  constructor(private lIDService: LoggedInDataService) {}
 
   ngOnInit() {
     this.lIDService.currentScreenName.next('Edit Prices');
-  }
-
-  //This is required to be ngAfterViewInit() and not ngOnInit().
-  // Otherwise data doesn't display properly in the detail form
-  ngAfterViewInit() {
-    this.productName = this.route.snapshot.params['name'];
-    this.setDataForEdit();
-    this.route.params.subscribe((params: Params) => {
-      this.productName = params['name'];
-      this.setDataForEdit();
-    });
-  }
-
-  setDataForEdit() {
-    if (this.productName) {
-      this.pEService.editPrice.next(this.productName);
-    }
   }
 }

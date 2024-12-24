@@ -27,11 +27,11 @@ export const routes: Routes = [
   },
   {
     path: 'price-edit',
-    component: PriceEditComponent,
     canActivate: [AdminGuard],
     children: [
       {
         path: '',
+        pathMatch: 'full',
         component: PriceEditComponent,
       },
       {

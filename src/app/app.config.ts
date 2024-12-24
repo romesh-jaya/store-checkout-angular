@@ -3,7 +3,12 @@ import {
   importProvidersFrom,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import {
+  ExtraOptions,
+  provideRouter,
+  withComponentInputBinding,
+  withRouterConfig,
+} from '@angular/router';
 
 import { routes } from './app.routes';
 import {
@@ -27,7 +32,11 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(CookieModule.withOptions()),
     provideToastr(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(
+      routes,
+      withComponentInputBinding(),
+      withRouterConfig({ paramsInheritanceStrategy: 'always' })
+    ),
     provideAnimations(),
   ],
 };

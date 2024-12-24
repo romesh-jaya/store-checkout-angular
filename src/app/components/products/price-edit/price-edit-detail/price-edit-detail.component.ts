@@ -1,26 +1,28 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { PriceEditService } from '../price-edit.service';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { PriceEditService } from '../../../../services/price-edit.service';
 import { ProductService } from '../../../../services/product.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Product } from '../../../../models/product.model';
 import { NotificationService } from '../../../../services/notification.service';
 import { UtilityService } from '../../../../services/utility.service';
 import { CommonModule } from '@angular/common';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-price-edit-detail',
   templateUrl: './price-edit-detail.component.html',
   styleUrls: ['./price-edit-detail.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule],
 })
 export class PriceEditDetailComponent implements OnInit {
   @ViewChild('f', { static: false }) pEForm?: NgForm;
   product?: Product;
   updatedPrice: { price?: number }[] = [];
-  alert = ' ';
-  alertClass = '';
+  faPlus = faPlus;
   showSpinner = false;
+  @Input() productName = '';
 
   constructor(
     private pEService: PriceEditService,
@@ -34,6 +36,10 @@ export class PriceEditDetailComponent implements OnInit {
       this.pEForm?.reset();
       this.getProduct(productName);
     });
+
+    if (this.productName) {
+      this.getProduct(this.productName);
+    }
   }
 
   getProduct(name: string) {
@@ -70,17 +76,17 @@ export class PriceEditDetailComponent implements OnInit {
 
     if (returnPrices.length == 0) {
       this.showSpinner = false;
-      this.notificationService.error(
-        this.utilityService.getError('Cannot remove all prices of a product')
-      );
+      this.notificationService.error('Cannot remove all prices of a product');
       return;
     }
+
     this.showSpinner = true;
     if (this.product) {
       this.productService.updatePrice(this.product, returnPrices).subscribe(
         () => {
-          this.notificationService.error('Prices updated successfully');
+          this.notificationService.success('Prices updated successfully');
           this.updatedPrice = [];
+          this.product = undefined;
           this.showSpinner = false;
           form.reset();
         },

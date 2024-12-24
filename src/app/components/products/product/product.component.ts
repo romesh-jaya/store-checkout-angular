@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { PriceEditService } from '../price-edit/price-edit.service';
+import { PriceEditService } from '../../../services/price-edit.service';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Product } from '../../../models/product.model';
 import { InputDialog } from '../input-dialog/input-dialog';
