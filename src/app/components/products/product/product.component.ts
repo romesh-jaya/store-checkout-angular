@@ -40,27 +40,6 @@ export class ProductComponent {
 
       this.inputDialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          if (
-            isNaN(+result.qty) ||
-            (result.discount && isNaN(+result.discount))
-          ) {
-            this.notificationService.error(
-              'Please enter valid quantity and discount.'
-            );
-            return;
-          } else if (
-            result.discount &&
-            (+result.discount > 100 || +result.discount < 0)
-          ) {
-            this.notificationService.error(
-              'Discount must be between 0 and 100.'
-            );
-            return;
-          }
-          if (+result.qty <= 0) {
-            this.notificationService.error('Quantity must be greater than 0.');
-            return;
-          }
           const discountCalc = result.discount == null ? 0 : +result.discount;
 
           if (this.productEl?.name) {

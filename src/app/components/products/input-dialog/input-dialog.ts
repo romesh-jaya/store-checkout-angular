@@ -9,6 +9,8 @@ import {
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-input-dialog',
@@ -22,11 +24,13 @@ import { MatSelectModule } from '@angular/material/select';
     MatSelectModule,
     FormsModule,
     CommonModule,
+    MatInputModule,
   ],
 })
 export class InputDialog {
   constructor(
     public dialogRef: MatDialogRef<InputDialog>,
+    private notificationService: NotificationService,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       qty: string;
@@ -36,5 +40,29 @@ export class InputDialog {
     }
   ) {
     data.selectedPrice = data.price[0];
+  }
+
+  onOkClicked() {
+    if (
+      isNaN(+this.data.qty) ||
+      (this.data.discount && isNaN(+this.data.discount))
+    ) {
+      this.notificationService.error(
+        'Please enter valid quantity and discount.'
+      );
+      return;
+    } else if (
+      this.data.discount &&
+      (+this.data.discount > 100 || +this.data.discount < 0)
+    ) {
+      this.notificationService.error('Discount must be between 0 and 100.');
+      return;
+    }
+    if (+this.data.qty <= 0) {
+      this.notificationService.error('Quantity must be greater than 0.');
+      return;
+    }
+
+    this.dialogRef.close(this.data);
   }
 }
