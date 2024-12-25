@@ -1,11 +1,10 @@
-<div class="mb-component-header">Shopping Cart</div>
 <div style="margin-right: 0px; margin-left: 10px">
   <div class="row">
     <div class="col-4">
       <app-product-list></app-product-list>
     </div>
     <div class="col-8">
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between mb-4">
         <h5>Shopping Cart Items</h5>
         <button
           class="btn btn-primary"
@@ -22,8 +21,8 @@
       >
       </app-shopping-cart-item>
       <div>
-        <h5 style="text-align: right; margin-top: 20px">
-          Total Amount: {{ calculateTotal() }}
+        <h5 style="text-align: right; margin-top: 20px" class="fs-3">
+          Total: {{ calculateTotal() }}
         </h5>
       </div>
     </div>

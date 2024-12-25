@@ -1,0 +1,5 @@
+.sub-total {
+  display: grid;
+  align-items: center;
+  justify-items: end;
+}

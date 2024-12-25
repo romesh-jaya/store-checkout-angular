@@ -1,24 +1,19 @@
-<div class="row">
-  <div class="col-10" style="padding-right: 5px; padding-left: 5px">
-    <a class="list-group-item clearfix">
-      <div class="pull-left">
-        <h6 class="list-group-item-heading">
-          {{ index + 1 }}. {{ cartItem?.name }}
-        </h6>
-        <p class="list-group-item-text">{{ cartItem?.price?.toFixed(2) }}/-</p>
-        <p class="list-group-item-text">Qty: {{ cartItem?.qty }}</p>
+<mat-card appearance="outlined" class="mb-2">
+  <div class="row">
+    <div class="col-9">
+      <mat-card-header class="pb-2">
+        <mat-card-title class="fs-5">
+          {{ index + 1 }}. {{ cartItem?.name }}</mat-card-title
+        >
+        <mat-card-subtitle class="ps-4"
+          >{{ cartItem?.price?.toFixed(2) }} * {{ cartItem?.qty }}
+        </mat-card-subtitle>
+      </mat-card-header>
+    </div>
+    <div class="col-3 sub-total fs-4">
+      <div class="pe-2">
+        {{ ((cartItem?.qty || 0) * (cartItem?.price || 0)).toFixed(2) }}
       </div>
-      <div class="pull-right">
-        <p class="list-group-item-text">
-          Item Total:
-          {{ ((cartItem?.qty || 0) * (cartItem?.price || 0)).toFixed(2) }}
-        </p>
-      </div>
-    </a>
+    </div>
   </div>
-  <div class="col-2">
-    <button type="button" class="btn btn-danger" (click)="onRemoveItem()">
-      X
-    </button>
-  </div>
-</div>
+</mat-card>
