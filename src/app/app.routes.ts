@@ -7,12 +7,18 @@ import { ManageProductsComponent } from './components/products/manage-products/m
 import { PriceOverviewComponent } from './components/products/price-overview/price-overview.component';
 import { PriceEditComponent } from './components/products/price-edit/price-edit.component';
 import { AdminGuard } from './guards/admin.guard';
+import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
   {
     path: 'change-password',
     component: ChangePasswordComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'shopping-cart',
+    component: ShoppingCartComponent,
     canActivate: [AuthGuard],
   },
   {
