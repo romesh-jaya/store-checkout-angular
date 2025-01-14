@@ -6,6 +6,8 @@ import { ShoppingCartService } from '../../../services/shopping-cart.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-shopping-cart-item',
@@ -18,11 +20,13 @@ import { MatChipsModule } from '@angular/material/chips';
     MatCardModule,
     MatButtonModule,
     MatChipsModule,
+    FontAwesomeModule,
   ],
 })
 export class ShoppingCartItemComponent {
   @Input() cartItem?: ShoppingCartItem;
   @Input() index = 0;
+  faTrash = faTrash;
 
   constructor(private sCService: ShoppingCartService) {}
 

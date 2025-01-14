@@ -2,17 +2,22 @@
   <div class="row">
     <div class="col-9">
       <mat-card-header class="pb-2">
-        <mat-card-title class="fs-5">
+        <mat-card-title class="fs-6">
           {{ index + 1 }}. {{ cartItem?.name }}</mat-card-title
         >
-        <mat-card-subtitle class="ps-4"
+        <mat-card-subtitle class="ps-3"
           >{{ cartItem?.price?.toFixed(2) }} * {{ cartItem?.qty }}
         </mat-card-subtitle>
       </mat-card-header>
     </div>
     <div class="col-3 sub-total fs-4">
-      <div class="pe-2">
-        {{ ((cartItem?.qty || 0) * (cartItem?.price || 0)).toFixed(2) }}
+      <div class="d-flex">
+        <button class="btn me-2" type="button" (click)="onRemoveItem()">
+          <fa-icon [icon]="faTrash" class="icon-trash"></fa-icon>
+        </button>
+        <div class="pe-3">
+          {{ ((cartItem?.qty || 0) * (cartItem?.price || 0)).toFixed(2) }}
+        </div>
       </div>
     </div>
   </div>
