@@ -1,0 +1,21 @@
+<mat-card
+  appearance="outlined"
+  *ngFor="let row of dataSource; let i = index"
+  class="mb-2"
+>
+  <mat-card-header class="pb-2">
+    <mat-card-title class="fs-5">{{ row.email }}</mat-card-title>
+    <mat-card-subtitle>
+      <mat-checkbox [(ngModel)]="row.isAdmin" name="isAdmin_{{ i }}"
+        >Administrator
+      </mat-checkbox>
+    </mat-card-subtitle>
+  </mat-card-header>
+</mat-card>
+<div class="row" style="padding-left: 20px">
+  <div style="float: left">
+    <button class="btn btn-success" type="button" (click)="onSaveChanges()">
+      Save
+    </button>
+  </div>
+</div>

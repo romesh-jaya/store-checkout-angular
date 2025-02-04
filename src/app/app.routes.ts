@@ -8,6 +8,7 @@ import { PriceOverviewComponent } from './components/products/price-overview/pri
 import { PriceEditComponent } from './components/products/price-edit/price-edit.component';
 import { AdminGuard } from './guards/admin.guard';
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
+import { ConfiguredUsersComponent } from './components/configured-users/configured-users.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -46,6 +47,10 @@ export const routes: Routes = [
       },
     ],
   },
-
+  {
+    path: 'users',
+    component: ConfiguredUsersComponent,
+    canActivate: [AdminGuard],
+  },
   { path: '**', component: PageNotFoundComponent },
 ];
