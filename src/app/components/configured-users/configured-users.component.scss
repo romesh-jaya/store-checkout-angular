@@ -1,0 +1,4 @@
+@import "../../../global-styles.scss";
+.container-users {
+  max-width: map-get($container-max-widths, "md");
+}

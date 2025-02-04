@@ -7,7 +7,9 @@ import { NotificationService } from '../../services/notification.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LoggedInDataService } from '../../services/logged-in-data.service';
+import { firstValueFrom } from 'rxjs';
 
 export interface UserData {
   email: string;
@@ -19,8 +21,8 @@ export interface UserData {
 @Component({
   selector: 'app-configured-users',
   templateUrl: './configured-users.component.html',
-  styleUrls: ['./configured-users.component.css'],
-  imports: [MatCardModule, FormsModule, CommonModule],
+  styleUrls: ['./configured-users.component.scss'],
+  imports: [MatCardModule, FormsModule, CommonModule, MatCheckboxModule],
   standalone: true,
 })
 export class ConfiguredUsersComponent implements OnInit {
@@ -64,12 +66,16 @@ export class ConfiguredUsersComponent implements OnInit {
   async onSaveChanges() {
     try {
       this.showSpinner = true;
+
       this.dataSource.forEach(async (element) => {
         if (element.isAdmin !== element.oldIsAdminValue) {
-          await this.cUService.updateAdmin(element.serverId, element.isAdmin);
+          await firstValueFrom(
+            this.cUService.updateAdmin(element.serverId, element.isAdmin)
+          );
         }
       });
       this.notificationService.success('Successfully saved changes');
+      this.refreshUsers();
     } catch (ex) {
       this.notificationService.error(this.utilityService.getError(ex));
     } finally {
