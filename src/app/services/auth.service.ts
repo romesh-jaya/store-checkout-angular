@@ -20,7 +20,7 @@ export interface AuthResponseData {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   loginProcessComplete = new Subject<boolean>();
-  baseURL = environment.nodeEndPoint + '/users';
+  baseURL = environment.nodeEndPoint + '/auth';
   expiryTimeIntervalDays = 365;
 
   constructor(

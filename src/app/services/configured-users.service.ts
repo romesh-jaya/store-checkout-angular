@@ -8,7 +8,7 @@ import { ConfiguredUser } from '../models/configured-users.model';
 @Injectable({ providedIn: 'root' })
 export class ConfiguredUsersService {
   configUsers: ConfiguredUser[] = [];
-  baseURL = environment.nodeEndPoint + '/users';
+  baseURL = environment.nodeEndPoint + '/auth';
   errorOccured = false;
 
   constructor(private http: HttpClient) {}

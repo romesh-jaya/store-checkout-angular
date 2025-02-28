@@ -38,7 +38,7 @@ export class ConfiguredUsersComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.lIDService.currentScreenName.next('Manage Products');
+    this.lIDService.currentScreenName.next('Configured Users');
     this.refreshUsers();
   }
 
