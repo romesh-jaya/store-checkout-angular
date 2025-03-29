@@ -66,28 +66,24 @@ export class ProductService {
       params = params.append('queryForNameFlag', 'y');
     }
 
-    return this.http
-      .get<{ results: any[] }>(this.baseURL, { params: params })
-      .pipe(
-        map((productData) => {
-          if (productData.results[0].products.length > 0) {
-            return {
-              products: productData.results[0].products.map(
-                (product: Product) => {
-                  return new Product(
-                    (product as any).name,
-                    (product as any).unitPrice,
-                    (product as any).barcode,
-                    (product as any)._id
-                  );
-                }
-              ),
-              rowCount: productData.results[0].totalCount[0].count,
-            };
-          } else {
-            return { products: [], rowCount: 0 };
-          }
-        })
-      );
+    return this.http.get(this.baseURL, { params: params }).pipe(
+      map((productData: any) => {
+        if (productData.products.length > 0) {
+          return {
+            products: productData.products.map((product: Product) => {
+              return new Product(
+                (product as any).name,
+                (product as any).unitPrice,
+                (product as any).barcode,
+                (product as any)._id
+              );
+            }),
+            rowCount: productData.totalCount,
+          };
+        } else {
+          return { products: [], rowCount: 0 };
+        }
+      })
+    );
   }
 }
