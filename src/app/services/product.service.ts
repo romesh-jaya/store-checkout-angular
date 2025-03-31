@@ -53,7 +53,8 @@ export class ProductService {
   getProductsForQuery(
     currentPage: number,
     queryString?: string,
-    queryForNameFlag?: boolean
+    queryForNameFlag?: boolean,
+    showInactiveProducts = false
   ) {
     let params = new HttpParams();
     params = params.append('currentPage', currentPage.toString());
@@ -64,6 +65,8 @@ export class ProductService {
     } else if (queryString) {
       params = params.append('queryForBarcode', queryString);
     }
+
+    params = params.append('showInactiveProducts', showInactiveProducts);
 
     return this.http.get(this.baseURL, { params: params }).pipe(
       map((productData: any) => {

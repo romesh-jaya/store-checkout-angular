@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProductComponent } from '../product/product.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-product-list',
@@ -24,6 +25,7 @@ import { ProductComponent } from '../product/product.component';
     FormsModule,
     FontAwesomeModule,
     ProductComponent,
+    MatCheckboxModule,
   ],
   styleUrls: ['./product-list.component.css'],
 })
@@ -39,6 +41,7 @@ export class ProductListComponent implements OnInit {
   rowCount = 0;
   lastWasQuery = false;
   pageIndex = 0;
+  showInactiveProducts = false;
 
   constructor(
     private productService: ProductService,
@@ -104,7 +107,8 @@ export class ProductListComponent implements OnInit {
       .getProductsForQuery(
         this.pageIndex,
         isQuery ? this.searchString : '',
-        isQuery && this.queryUsing === '2' ? true : false
+        isQuery && this.queryUsing === '2' ? true : false,
+        this.showInactiveProducts
       )
       .subscribe(
         (results) => {

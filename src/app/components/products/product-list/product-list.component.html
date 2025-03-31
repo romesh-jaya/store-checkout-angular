@@ -1,25 +1,35 @@
 <div>
   <h5>Product List</h5>
-  <div class="form-inline md-form form-sm d-flex" style="margin-bottom: 20px">
-    <fa-icon
-      [icon]="faDownload"
-      (click)="onPopulateClicked()"
-      class="p-2 me-2 pointer"
-    ></fa-icon>
-    <fa-icon
-      [icon]="faSearch"
-      (click)="onSearchClicked()"
-      class="p-2 me-2 pointer"
-    ></fa-icon>
-    <input
-      [(ngModel)]="searchString"
-      class="form-control form-control-sm ml-3 w-75"
-      placeholder="Search Product"
-      aria-label="Search"
-      mdbInput
-      (keyup.enter)="onSearchClicked()"
-    />
+  <div class="form-inline md-form form-sm me-5" style="margin-bottom: 20px">
+    <div class="w-100">
+      <fa-icon
+        [icon]="faDownload"
+        (click)="onPopulateClicked()"
+        class="p-2 me-2 pointer"
+      ></fa-icon>
+      <fa-icon
+        [icon]="faSearch"
+        (click)="onSearchClicked()"
+        class="p-2 me-2 pointer"
+      ></fa-icon>
+      <mat-checkbox
+        [checked]="showInactiveProducts"
+        (change)="showInactiveProducts = $event.checked"
+        >Show Inactive Products
+      </mat-checkbox>
+    </div>
+    <div>
+      <input
+        [(ngModel)]="searchString"
+        class="form-control form-control-sm ml-3 w-100"
+        placeholder="Search Product"
+        aria-label="Search"
+        mdbInput
+        (keyup.enter)="onSearchClicked()"
+      />
+    </div>
   </div>
+
   <div class="mb-4">
     <mat-radio-group [(ngModel)]="queryUsing"
       >Query using:
@@ -40,6 +50,7 @@
   </div>
   <mat-paginator
     *ngIf="searchedAtLeastOnce && !showSpinner"
+    class="me-5"
     [length]="rowCount"
     [pageSize]="pagesize"
     [pageIndex]="pageIndex"
