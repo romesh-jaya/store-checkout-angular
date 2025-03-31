@@ -37,7 +37,7 @@ export class ProductService {
   }
 
   getProduct(name: string) {
-    const uRL = this.baseURL + '/' + name;
+    const uRL = this.baseURL + '?name=' + name;
     return this.http.get<any>(uRL).pipe(
       map((product) => {
         return new Product(
@@ -59,11 +59,10 @@ export class ProductService {
     params = params.append('currentPage', currentPage.toString());
     params = params.append('pagesize', environment.productsPerPage.toString());
 
-    if (queryString) {
-      params = params.append('queryString', queryString);
-    }
-    if (queryForNameFlag) {
-      params = params.append('queryForNameFlag', 'y');
+    if (queryString && queryForNameFlag) {
+      params = params.append('queryForName', queryString);
+    } else if (queryString) {
+      params = params.append('queryForBarcode', queryString);
     }
 
     return this.http.get(this.baseURL, { params: params }).pipe(

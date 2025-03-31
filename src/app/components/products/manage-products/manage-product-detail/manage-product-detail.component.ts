@@ -21,7 +21,7 @@ export class ManageProductDetailComponent implements OnInit {
   productEdit?: Product;
   productName = '';
   newPrice = '';
-  barcode?: number;
+  barcode? = '';
   showSpinner = false;
 
   constructor(
@@ -93,7 +93,6 @@ export class ManageProductDetailComponent implements OnInit {
 
   onAddEditProduct(form: NgForm) {
     const value = form.value;
-    let newBarcode = 0;
     let newProduct: Product;
 
     if (!this.editMode) {
@@ -117,12 +116,7 @@ export class ManageProductDetailComponent implements OnInit {
         return;
       }
 
-      // Perform actual adding
-      if (value.barcode != null) {
-        newBarcode = +value.barcode;
-      }
-
-      newProduct = new Product(value.name, [+value.newPrice], newBarcode);
+      newProduct = new Product(value.name, [+value.newPrice], value.barcode);
       this.showSpinner = true;
 
       this.productService.addItem(newProduct).subscribe(
